@@ -98,6 +98,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    HAL_SPI_Transmit(hspi2,)
 
     /* USER CODE BEGIN 3 */
   }
