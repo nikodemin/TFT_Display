@@ -91,7 +91,7 @@ int main(void)
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
-  cpp_main();
+  cpp_main(hspi2);
 
   /* USER CODE END 2 */
 

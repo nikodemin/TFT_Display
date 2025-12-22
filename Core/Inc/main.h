@@ -54,7 +54,7 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 
-int cpp_main(void);
+int cpp_main(SPI_HandleTypeDef spi);
 
 /* USER CODE END EFP */
 

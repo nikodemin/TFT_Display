@@ -1,6 +1,6 @@
 #include "ST7735_TEE.hpp"
 #include <stdlib.h>
-#include "glcdfont.c"
+#include "glcdfont.cpp"
 
 TEE_ST7735::TEE_ST7735(uint16_t rst_pin, uint16_t cs_pin, uint16_t dc_pin,
 					   GPIO_TypeDef rst_port, GPIO_TypeDef cs_port, GPIO_TypeDef dc_port, SPI_HandleTypeDef spi)
@@ -653,7 +653,7 @@ unsigned char TEE_ST7735::conv_to_uchar(char x)
 void TEE_ST7735::showpic(const uint16_t *pic, uint8_t org_x, uint8_t org_y, uint8_t width, uint8_t high)
 {
 	uint8_t x, y;
-	uint k = 0;
+	uint8_t k = 0;
 	setAddrWindow(org_x, org_y, (org_x + width) - 1, (org_y + high) - 1);
 
 	// setup for data

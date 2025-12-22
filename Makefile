@@ -58,7 +58,9 @@ Core/Src/sysmem.c \
 Core/Src/syscalls.c  
 
 CXX_SOURCES = \
-cpp_core/Src/cpp_main.cpp
+cpp_core/Src/cpp_main.cpp \
+cpp_core/Src/glcdfont.cpp \
+cpp_core/Src/ST7735_TEE.cpp
 
 # ASM sources
 ASM_SOURCES =  \

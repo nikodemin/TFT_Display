@@ -118,7 +118,6 @@ public:
 	void drawChar_th(uint8_t x, uint8_t y, char c, uint16_t color);
 	void drawChar(uint8_t x, uint8_t y, char c, uint16_t color, uint8_t size);
 	void drawString(uint8_t x, uint8_t y, char *c, uint16_t color, uint8_t size);
-	void drawChar_th(uint8_t x, uint8_t y, char c, uint16_t color);
 	void Printstr(uint8_t x, uint8_t y, char *c, uint16_t color);
 	unsigned char up_state(unsigned char c1, unsigned char c2);
 	unsigned char conv_to_uchar(char x);
