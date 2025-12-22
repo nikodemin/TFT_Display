@@ -1,4 +1,4 @@
-#include "ST7735_TEE.h"
+#include "ST7735_TEE.hpp"
 #include <stdlib.h>
 #include "glcdfont.c"
 

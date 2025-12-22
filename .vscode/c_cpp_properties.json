@@ -1,18 +1,36 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "C_C++",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/Drivers/**",
+                "${workspaceFolder}/Core/**",
+                "${workspaceFolder}/cpp_core/**"
             ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                "${workspaceFolder}/Drivers/**",
+                "${workspaceFolder}/Core/**",
+                "${workspaceFolder}/cpp_core/**"
+                ]
+            },
             "defines": [
-              "STM32F407xx",
-              "USE_HAL_DRIVER"
+                "PLATFORMIO=60118",
+                "STM32F4",
+                "STM32F407xx",
+                "STM32F40_41xxx",
+                "USE_HAL_DRIVER",
+                "F_CPU=168000000L",
+                ""
             ],
-            "compilerPath": "/usr/bin/gcc",
-            "cStandard": "c17",
-            "cppStandard": "gnu++17",
-            "intelliSenseMode": "linux-gcc-x64"
+            "cppStandard": "c++17",
+            "compilerPath": "/usr/bin/arm-none-eabi-g++",
+            "compilerArgs": [
+                "-mthumb",
+                "-mcpu=cortex-m4",
+                ""
+            ]
         }
     ],
     "version": 4
