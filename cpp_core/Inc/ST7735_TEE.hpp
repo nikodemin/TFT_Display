@@ -79,11 +79,11 @@ private:
 	}
 	void AO_H()
 	{
-		HAL_GPIO_WritePin(&rst_port, rst_pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(&dc_port, dc_pin, GPIO_PIN_SET);
 	}
 	void AO_L()
 	{
-		HAL_GPIO_WritePin(&rst_port, rst_pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(&dc_port, dc_pin, GPIO_PIN_SET);
 	}
 
 public:

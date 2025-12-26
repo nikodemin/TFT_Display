@@ -12,15 +12,21 @@ TEE_ST7735::TEE_ST7735(uint16_t rst_pin, uint16_t cs_pin, uint16_t dc_pin,
 	this->cs_port = cs_port;
 	this->dc_port = dc_port;
 	this->spi = spi;
+
+	HAL_GPIO_WritePin(&rst_port, rst_pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(&cs_port, cs_pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(&dc_port, dc_pin, GPIO_PIN_RESET);
 }
+
 void TEE_ST7735::init(bool horizontal_orientation)
 {
 
 	HAL_GPIO_WritePin(&cs_port, cs_pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(&rst_port, rst_pin, GPIO_PIN_SET);
+	HAL_Delay(500);
 	HAL_GPIO_WritePin(&rst_port, rst_pin, GPIO_PIN_RESET);
 	HAL_Delay(500);
 	HAL_GPIO_WritePin(&rst_port, rst_pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(&cs_port, cs_pin, GPIO_PIN_RESET);
 	HAL_Delay(500);
 	writecommand(ST7735_SWRESET); // software reset
 	HAL_Delay(150);
@@ -157,17 +163,17 @@ void TEE_ST7735::spiwrite(uint8_t SPI_byte)
 }
 void TEE_ST7735::writecommand(uint8_t c)
 {
-	HAL_GPIO_WritePin(&dc_port, dc_pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(&cs_port, cs_pin, GPIO_PIN_RESET);
+	AO_L();
+	CS_L();
 	spiwrite(c);
-	HAL_GPIO_WritePin(&cs_port, cs_pin, GPIO_PIN_SET);
+	CS_H();
 }
 void TEE_ST7735::writedata(uint8_t c)
 {
-	HAL_GPIO_WritePin(&dc_port, dc_pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(&cs_port, cs_pin, GPIO_PIN_RESET);
+	AO_H();
+	CS_L();
 	spiwrite(c);
-	HAL_GPIO_WritePin(&cs_port, cs_pin, GPIO_PIN_SET);
+	CS_H();
 }
 void TEE_ST7735::setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1)
 {
@@ -486,8 +492,8 @@ void TEE_ST7735::drawChar_th(uint8_t x, uint8_t y, char c, uint16_t color)
 	for (i = (c * 26); i < (26 * (c + 1)); i += 2)
 	{
 
-			line = eng13x16[i];
-			line2 = eng13x16[i + 1];
+		line = eng13x16[i];
+		line2 = eng13x16[i + 1];
 
 		int line_16 = (line << 8) | line2;
 		yy = 0;
