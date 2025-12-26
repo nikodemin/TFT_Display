@@ -2,16 +2,10 @@
 
 extern "C" int cpp_main(SPI_HandleTypeDef spi)
 {
-    TEE_ST7735 display = TEE_ST7735(TFT_RST_Pin, TFT_CS_Pin, TFT_DC_Pin, *TFT_RST_GPIO_Port, *TFT_CS_GPIO_Port, *TFT_DC_GPIO_Port, spi);
+    ST7735_Init();
+    ST7735_FillScreen(ST7735_GREEN);
+    ST7735_FillRectangle(0, 0, 50, 50, ST7735_WHITE);
+    ST7735_WriteString(100, 0, "Hello world!", Font_7x10, ST7735_BLACK, ST7735_WHITE);
 
-    display.init(true);
-    bool toggle = false;
-    for (;;)
-    {
-        if (toggle)
-            display.fillScreen(GREEN);
-        else
-            display.fillScreen(GREEN);
-        HAL_Delay(2000);
-    }
+    for (;;){}
 }
