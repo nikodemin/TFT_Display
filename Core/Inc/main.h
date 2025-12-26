@@ -67,6 +67,8 @@ int cpp_main(SPI_HandleTypeDef spi);
 #define TFT_SDA_GPIO_Port GPIOC
 #define TFT_SCK_Pin GPIO_PIN_10
 #define TFT_SCK_GPIO_Port GPIOB
+#define TFT_CS_Pin GPIO_PIN_4
+#define TFT_CS_GPIO_Port GPIOC
 
 /* USER CODE BEGIN Private defines */
 
