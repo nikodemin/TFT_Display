@@ -11,37 +11,6 @@
 #define ST7735_MADCTL_BGR 0x08
 #define ST7735_MADCTL_MH 0x04
 
-
-// AliExpress/eBay 1.8" display, rotate right
-/*
-#define ST7735_IS_160X128 1
-#define ST7735_WIDTH  160
-#define ST7735_HEIGHT 128
-#define ST7735_XSTART 0
-#define ST7735_YSTART 0
-#define ST7735_ROTATION (ST7735_MADCTL_MY | ST7735_MADCTL_MV)
-*/
-
-// AliExpress/eBay 1.8" display, rotate left
-/*
-#define ST7735_IS_160X128 1
-#define ST7735_WIDTH  160
-#define ST7735_HEIGHT 128
-#define ST7735_XSTART 0
-#define ST7735_YSTART 0
-#define ST7735_ROTATION (ST7735_MADCTL_MX | ST7735_MADCTL_MV)
-*/
-
-// AliExpress/eBay 1.8" display, upside down
-/*
-#define ST7735_IS_160X128 1
-#define ST7735_WIDTH  128
-#define ST7735_HEIGHT 160
-#define ST7735_XSTART 0
-#define ST7735_YSTART 0
-#define ST7735_ROTATION (0)
-*/
-
 // WaveShare ST7735S-based 1.8" display, default orientation
 /*
 #define ST7735_IS_160X128 1
@@ -239,23 +208,61 @@ extern "C"
 		DisplayType(uint8_t w, uint8_t h, uint8_t xs, uint8_t ys, uint8_t r, bool ci) : width(w), height(h), x_start(xs), y_start(ys), rotation(r), need_color_inversion(ci) {};
 	};
 
-	struct Normal_160_128 : DisplayType
+	namespace display_types
 	{
-		static Normal_160_128 *instance()
+
+		struct Ali_normal_160_128 : DisplayType
 		{
-			static auto instance = Normal_160_128();
-			return &instance;
+			static Ali_normal_160_128 *instance()
+			{
+				static auto instance = Ali_normal_160_128();
+				return &instance;
+			};
+
+		private:
+			Ali_normal_160_128() : DisplayType(128, 160, 0, 0, ST7735_MADCTL_MX | ST7735_MADCTL_MY, false) {};
 		};
 
-	private:
-		Normal_160_128() : DisplayType(128, 160, 0, 0, ST7735_MADCTL_MX | ST7735_MADCTL_MY, false) {};
-	};
+		struct Ali_right_160_128 : DisplayType
+		{
+			static Ali_right_160_128 *instance()
+			{
+				static auto instance = Ali_right_160_128();
+				return &instance;
+			};
 
+		private:
+			Ali_right_160_128() : DisplayType(160, 128, 0, 0, ST7735_MADCTL_MY | ST7735_MADCTL_MV, false) {};
+		};
+
+		struct Ali_left_160_128 : DisplayType
+		{
+			static Ali_left_160_128 *instance()
+			{
+				static auto instance = Ali_left_160_128();
+				return &instance;
+			};
+
+		private:
+			Ali_left_160_128() : DisplayType(160, 128, 0, 0, ST7735_MADCTL_MX | ST7735_MADCTL_MV, false) {};
+		};
+		struct Ali_upside_down_160_128 : DisplayType
+		{
+			static Ali_upside_down_160_128 *instance()
+			{
+				static auto instance = Ali_upside_down_160_128();
+				return &instance;
+			};
+
+		private:
+			Ali_upside_down_160_128() : DisplayType(128, 160, 0, 0, 0, false) {};
+		};
+	}
 	class ST7735
 	{
 		void writeCommand(uint8_t cmd);
 		void writeData(uint8_t *buff, size_t buff_size);
-		void executeCommandList(const uint8_t *addr);
+		void executeCommandList(uint8_t *addr);
 		void writeChar(uint16_t x, uint16_t y, char ch, FontDef font, uint16_t color, uint16_t bgcolor);
 		void setAddressWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
 
