@@ -9,7 +9,9 @@ extern "C" int cpp_main(SPI_HandleTypeDef *spi)
     display.init();
     display.fillScreenFast(ST7735_WHITE);
     display.drawLine(80,64,0,0, ST7735_BLUE);
-    display.drawLine(80,64,160,128, ST7735_GREEN);
+    display.drawLine(80,64,159,127, ST7735_GREEN);
+    display.drawLine(80,64,0,127, ST7735_MAGENTA);
+    display.drawLine(80,64,159,0, ST7735_YELLOW);
 
     for (;;)
     {

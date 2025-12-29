@@ -364,29 +364,30 @@ void ST7735::drawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16
 
   uint16_t dx = x1 - x0;
   uint16_t dy = abs(y1 - y0);
-  uint16_t err = 1;
+  uint16_t err = 2;
 
-  for (int i = x0; i < x1; i++)
+  if (y0 > y1)
   {
-    if (y0 > y1)
-    {
-      for (int j = y0; j < y1; j--)
+    for (int i = x0; i < x1; i++)
+      for (int j = y0; j > y1 ; j--)
       {
-        if ((j - y1) * dx - (dx - (i - x0)) * dy < err * dx)
+        uint16_t diff = (j - y1) * dx - (dx - (i - x0)) * dy;
+        if ((diff >=0 && diff <= dx*err) || (diff <0 && diff <= -dx*err))
         {
           drawPixel(i, j, color);
         }
       }
-    }
-    else
-    {
+  }
+  else
+  {
+    for (int i = x0; i < x1; i++)
       for (int j = y0; j < y1; j++)
       {
-        if ((i - x0) * dy - (j - y0) * dx < err * dy)
+        uint16_t diff = (i - x0) * dy - (j - y0) * dx;
+        if ((diff >= 0 && diff <= dy * err) || (diff < 0 && diff <= -dy * err))
         {
           drawPixel(i, j, color);
         }
       }
-    }
   }
 }
