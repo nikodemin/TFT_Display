@@ -295,6 +295,7 @@ extern "C"
 		void drawImage(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *data);
 		void invertColors(bool invert);
 		void setGamma(GammaDef gamma);
+		void drawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
 	};
 #ifdef __cplusplus
 }

@@ -2,6 +2,7 @@
 #include "stm32f4xx_hal.h"
 #include "st7735.hpp"
 #include "string.h"
+#include <alg_ops.hpp>
 
 #define DELAY 0x80
 
@@ -197,7 +198,7 @@ void ST7735::drawPixel(uint16_t x, uint16_t y, uint16_t color)
 
   select();
 
-  setAddressWindow(x, y, x + 1, y + 1);
+  setAddressWindow(x, y, x, y);
   uint8_t data[] = {color >> 8, color & 0xFF};
   writeData(data, sizeof(data));
 
@@ -351,4 +352,41 @@ void ST7735::setGamma(GammaDef gamma)
   writeCommand(ST7735_GAMSET);
   writeData((uint8_t *)&gamma, sizeof(gamma));
   unselect();
+}
+
+void ST7735::drawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color)
+{
+  if (x0 > x1)
+  {
+    swap(x0, x1);
+    swap(y0, y1);
+  }
+
+  uint16_t dx = x1 - x0;
+  uint16_t dy = abs(y1 - y0);
+  uint16_t err = 1;
+
+  for (int i = x0; i < x1; i++)
+  {
+    if (y0 > y1)
+    {
+      for (int j = y0; j < y1; j--)
+      {
+        if ((j - y1) * dx - (dx - (i - x0)) * dy < err * dx)
+        {
+          drawPixel(i, j, color);
+        }
+      }
+    }
+    else
+    {
+      for (int j = y0; j < y1; j++)
+      {
+        if ((i - x0) * dy - (j - y0) * dx < err * dy)
+        {
+          drawPixel(i, j, color);
+        }
+      }
+    }
+  }
 }
