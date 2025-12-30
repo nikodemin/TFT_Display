@@ -8,12 +8,8 @@ extern "C" int cpp_main(SPI_HandleTypeDef *spi)
 
     display.init();
     display.fillScreenFast(ST7735_WHITE);
-    display.drawPixel(20, 20, ST7735_RED);
-    display.drawPixel(21, 21, ST7735_RED);
-    display.drawPixel(20, 21, ST7735_RED);
-    display.drawPixel(21, 20, ST7735_RED);
-    display.fillRectangle(20,20,20,20,ST7735_BLUE);
-    display.writeString(0,0,"dskjfdslk", Font_11x18, ST7735_BLACK, ST7735_WHITE);
+    display.drawLine(80,64,0,0, ST7735_BLUE);
+    display.drawLine(80,64,160,128, ST7735_GREEN);
 
     for (;;)
     {
