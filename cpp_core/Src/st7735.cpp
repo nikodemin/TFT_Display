@@ -19,10 +19,10 @@ static uint8_t init_cmds3[] =
         0x2E, 0x2C, 0x29, 0x2D,
         0x2E, 0x2E, 0x37, 0x3F,
         0x00, 0x00, 0x02, 0x10,
-        ST7735_NORON, DELAY,  //  3: Normal display on, no args, w/delay
-        10,                   //     10 ms delay
-        ST7735_DISPON, DELAY, //  4: Main screen turn on, no args w/delay
-        100};                 //     100 ms delay
+        ST7735_DISPON, DELAY,  //  3: Normal display on, no args, w/delay
+        100,                   //     10 ms delay
+        ST7735_NORON, DELAY, //  4: Main screen turn on, no args w/delay
+        10};                 //     100 ms delay
 
 uint8_t *init_cmds1(DisplayType *dt)
 {
@@ -116,6 +116,8 @@ void ST7735::unselect()
 
 void ST7735::reset()
 {
+  HAL_GPIO_WritePin(res_port, res_pin, GPIO_PIN_SET);
+  HAL_Delay(5);
   HAL_GPIO_WritePin(res_port, res_pin, GPIO_PIN_RESET);
   HAL_Delay(5);
   HAL_GPIO_WritePin(res_port, res_pin, GPIO_PIN_SET);
@@ -369,10 +371,10 @@ void ST7735::drawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16
   if (y0 > y1)
   {
     for (int i = x0; i < x1; i++)
-      for (int j = y0; j > y1 ; j--)
+      for (int j = y0; j > y1; j--)
       {
         uint16_t diff = (j - y1) * dx - (dx - (i - x0)) * dy;
-        if ((diff >=0 && diff <= dx*err) || (diff <0 && diff <= -dx*err))
+        if ((diff >= 0 && diff <= dx * err) || (diff < 0 && diff <= -dx * err))
         {
           drawPixel(i, j, color);
         }
@@ -390,4 +392,68 @@ void ST7735::drawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16
         }
       }
   }
+}
+
+void ST7735::drawHLine(uint16_t x0, uint16_t x1, uint16_t y, uint16_t color)
+{
+  if (x0 > x1)
+  {
+    swap(x0, x1);
+  }
+  select();
+  setAddressWindow(x0, y, x1, y);
+
+  const uint8_t size = (x1 - x0 + 1) << 1;
+  uint8_t data[size];
+  const uint8_t buff[2] = {color >> 8, color & 0xFF};
+
+  for (int i = 0; i < size; i++)
+  {
+    data[i] = buff[i % 2];
+  }
+
+  writeData(data, sizeof(data));
+  unselect();
+}
+
+void ST7735::drawVLine(uint16_t y0, uint16_t y1, uint16_t x, uint16_t color)
+{
+  if (y0 > y1)
+  {
+    swap(y0, y1);
+  }
+  select();
+  setAddressWindow(x, y0, x, y1);
+
+  const uint8_t size = (y1 - y0 + 1) << 1;
+  uint8_t data[size];
+  const uint8_t buff[2] = {color >> 8, color & 0xFF};
+
+  for (int i = 0; i < size; i++)
+  {
+    data[i] = buff[i % 2];
+  }
+
+  writeData(data, sizeof(data));
+  unselect();
+}
+
+void ST7735::fillCircle(uint16_t x, uint16_t y, uint16_t r, uint16_t color)
+{
+  uint16_t r2 = pow2(r);
+
+  for (int j = y - r; j <= y + r; j++)
+  {
+    uint16_t j2 = pow2(j - y);
+    uint16_t i2 = r2 - j2;
+    uint16_t i = x - r;
+    uint16_t xs;
+
+    while (pow2(i - x) > i2) i++;
+    xs = i;
+    i = x + r;
+    while (pow2(i - x) > i2) i--;
+
+    drawHLine(xs, i, j, color);
+  }    
 }
